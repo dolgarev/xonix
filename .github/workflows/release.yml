@@ -1,0 +1,43 @@
+name: Build and Release Xonix
+
+on:
+  push:
+    tags:
+      - 'v*' # Trigger only when a version tag is created, e.g., v1.0.0
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Ada and Ncurses Dependencies
+        run: |
+          sudo apt-get update
+          # Install GNAT, GPRBuild and the ncursesada library
+          sudo apt-get install -y gnat gprbuild libncursesada-dev
+
+      - name: Build Xonix
+        run: |
+          # Create the destination directory if it doesn't exist
+          mkdir -p bin
+          # Build the project
+          gprbuild -P xonix.gpr
+          mv bin/xonix bin/xonix-linux-amd64
+          sha256sum bin/xonix-linux-amd64 > bin/xonix-linux-amd64.sha256
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            bin/xonix-linux-amd64
+            bin/xonix-linux-amd64.sha256
+          fail_on_unmatched_files: true
+          generate_release_notes: true
+          body: "Automated Xonix release for Linux (x86_64)."
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

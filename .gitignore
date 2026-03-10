@@ -1,0 +1,6 @@
+**/bin/
+**/obj/
+*.ali
+*.o
+.crush/
+AGENTS.md
