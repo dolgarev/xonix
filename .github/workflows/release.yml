@@ -6,10 +6,17 @@ on:
       - 'v*' # Trigger only when a version tag is created, e.g., v1.0.0
 
 jobs:
-  build-and-release:
-    runs-on: ubuntu-latest
+  build:
+    strategy:
+      matrix:
+        include:
+          - arch: amd64
+            os: ubuntu-latest
+          - arch: arm64
+            os: ubuntu-24.04-arm
+    runs-on: ${{ matrix.os }}
     permissions:
-      contents: write
+      contents: read
     
     steps:
       - name: Checkout code
@@ -18,26 +25,42 @@ jobs:
       - name: Install Ada and Ncurses Dependencies
         run: |
           sudo apt-get update
-          # Install GNAT, GPRBuild and the ncursesada library
           sudo apt-get install -y gnat gprbuild libncursesada-dev
 
       - name: Build Xonix
         run: |
-          # Create the destination directory if it doesn't exist
           mkdir -p bin
-          # Build the project
           gprbuild -P xonix.gpr
-          mv bin/xonix bin/xonix-linux-amd64
-          sha256sum bin/xonix-linux-amd64 > bin/xonix-linux-amd64.sha256
+          mv bin/xonix bin/xonix-linux-${{ matrix.arch }}
+          sha256sum bin/xonix-linux-${{ matrix.arch }} > bin/xonix-linux-${{ matrix.arch }}.sha256
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: xonix-binaries-${{ matrix.arch }}
+          path: bin/
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release-artifacts
+          pattern: xonix-binaries-*
+          merge-multiple: true
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            bin/xonix-linux-amd64
-            bin/xonix-linux-amd64.sha256
+            release-artifacts/xonix-linux-*
           fail_on_unmatched_files: true
           generate_release_notes: true
-          body: "Automated Xonix release for Linux (x86_64)."
+          body: "Automated Xonix release for Linux (amd64 and arm64)."
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
