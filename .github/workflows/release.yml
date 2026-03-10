@@ -15,17 +15,19 @@ jobs:
           - arch: arm64
             os: ubuntu-24.04-arm
     runs-on: ${{ matrix.os }}
+    container:
+      image: ${{ matrix.arch == 'arm64' && 'debian:trixie' || 'ubuntu:latest' }}
     permissions:
       contents: read
     
     steps:
+      - name: Install Build Dependencies
+        run: |
+          apt-get update
+          apt-get install -y git gnat gprbuild libncursesada-dev
+
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Install Ada and Ncurses Dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y gnat gprbuild libncursesada-dev
 
       - name: Build Xonix
         run: |
