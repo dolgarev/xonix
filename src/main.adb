@@ -133,6 +133,9 @@ begin
 
                 if State.Level < Settings.Max_Levels then
                     State.Level := State.Level + 1;
+                    if State.Lives < 5 then
+                        State.Lives := State.Lives + 1;
+                    end if;
                     Init_Level (State, State.Level);
                     Next_Tick := Ada.Calendar.Clock;
                 else
