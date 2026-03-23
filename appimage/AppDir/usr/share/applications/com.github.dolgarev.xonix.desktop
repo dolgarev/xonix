@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Xonix
+Comment=Classic arcade game
+Exec=xonix
+Icon=xonix
+Type=Application
+Categories=Game;
+Terminal=true

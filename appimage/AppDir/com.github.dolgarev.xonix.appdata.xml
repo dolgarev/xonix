@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="console-application">
+  <id>com.github.dolgarev.xonix</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-only</project_license>
+  <name>Xonix</name>
+  <summary>Classic arcade game</summary>
+  <description>
+    <p>Xonix is a classic arcade game where the goal is to capture a certain percentage of the game field (75% or more) while avoiding enemies.</p>
+    <p>Draw traces to capture territory. Return to the safe area to close the trace and fill the enclosed area. Avoid balls and land enemies!</p>
+  </description>
+  <url type="homepage">https://github.com/dolgarev/xonix</url>
+  <launchable type="desktop-id">com.github.dolgarev.xonix.desktop</launchable>
+  <provides>
+    <binary>xonix</binary>
+  </provides>
+  <categories>
+    <category>Game</category>
+  </categories>
+  <content_rating type="oars-1.1"/>
+</component>

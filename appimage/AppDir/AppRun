@@ -1,0 +1,21 @@
+#!/bin/bash
+HERE="$(dirname "$(readlink -f "${0}")")"
+export LD_LIBRARY_PATH="${HERE}/usr/lib:${LD_LIBRARY_PATH}"
+
+if [ -t 0 ]; then
+    exec "${HERE}/usr/bin/xonix" "$@"
+else
+    for term in xfce4-terminal gnome-terminal konsole xterm kitty alacritty; do
+        if command -v "$term" &>/dev/null; then
+            case "$term" in
+                xfce4-terminal) exec "$term" -x "${HERE}/usr/bin/xonix" "$@" ;;
+                gnome-terminal) exec "$term" -- "${HERE}/usr/bin/xonix" "$@" ;;
+                konsole)       exec "$term" -e "${HERE}/usr/bin/xonix" "$@" ;;
+                xterm)        exec "$term" -e "${HERE}/usr/bin/xonix" "$@" ;;
+                kitty)        exec "$term" "${HERE}/usr/bin/xonix" "$@" ;;
+                alacritty)    exec "$term" -e "${HERE}/usr/bin/xonix" "$@" ;;
+            esac
+        fi
+    done
+    exec "${HERE}/usr/bin/xonix" "$@"
+fi
