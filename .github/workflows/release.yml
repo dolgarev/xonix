@@ -56,6 +56,11 @@ jobs:
           apt-get update
           apt-get install -y gnat gprbuild libncursesada-dev squashfs-tools wget
 
+      - name: Install appimagetool
+        run: |
+          wget -q https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage -O /tmp/appimagetool
+          chmod +x /tmp/appimagetool
+
       - name: Build AppImage
         run: |
           cd appimage
