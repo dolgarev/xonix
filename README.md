@@ -2,7 +2,7 @@
 
 A classic implementation of the arcade game Xonix, written in Ada using the `ncurses` library.
 
-<img width="1032" height="800" alt="ksnip_20260425-211026" src="https://github.com/user-attachments/assets/b861a42a-28dd-431f-b904-bf77533a3240" />
+<img width="991" height="768" alt="ksnip_20260425-211026_result" src="https://github.com/user-attachments/assets/06eb83a0-6135-4fda-9aac-4a9567ad351d" />
 
 ## Game Description
 
