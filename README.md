@@ -2,6 +2,8 @@
 
 A classic implementation of the arcade game Xonix, written in Ada using the `ncurses` library.
 
+<img width="1032" height="800" alt="ksnip_20260425-211026" src="https://github.com/user-attachments/assets/b861a42a-28dd-431f-b904-bf77533a3240" />
+
 ## Game Description
 
 The goal of Xonix is to capture a certain percentage of the game field (standardly 75% or more) while avoiding enemies.
